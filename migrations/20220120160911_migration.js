@@ -3,6 +3,7 @@ const Sequelize = require("sequelize");
 /**
  * Actions summary:
  *
+ * createTable() => "Dishes", deps: []
  * createTable() => "Participants", deps: []
  * createTable() => "Themes", deps: []
  * createTable() => "Tournaments", deps: []
@@ -17,11 +18,46 @@ const Sequelize = require("sequelize");
 const info = {
   revision: 1,
   name: "migration",
-  created: "2022-01-06T15:58:27.160Z",
+  created: "2022-01-20T16:09:11.186Z",
   comment: "",
 };
 
 const migrationCommands = (transaction) => [
+  {
+    fn: "createTable",
+    params: [
+      "Dishes",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        name: { type: Sequelize.STRING, field: "name" },
+        description: { type: Sequelize.TEXT, field: "description" },
+        type: { type: Sequelize.STRING, field: "type" },
+        price: { type: Sequelize.FLOAT, field: "price" },
+        quantity: {
+          type: Sequelize.INTEGER,
+          field: "quantity",
+          defaultValue: 0,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+      },
+      { transaction },
+    ],
+  },
   {
     fn: "createTable",
     params: [
@@ -294,6 +330,10 @@ const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["Definitions", { transaction }],
+  },
+  {
+    fn: "dropTable",
+    params: ["Dishes", { transaction }],
   },
   {
     fn: "dropTable",

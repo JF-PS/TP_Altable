@@ -9,17 +9,11 @@ const port = process.env.PORT || 8000;
 
 app.use(cors());
 
-const tournamentRoutes = require("./routes/tournaments.route");
-const tournamentController = require("./controllers/tournaments.controller");
-const tournamentBuisness = require("./buisness/tournaments.buisness");
-const TournamentsRepository = require("./repositories/TournamentRepository.pg");
-const tournamentsRepository = new TournamentsRepository();
-
-const participantRoutes = require("./routes/participants.route");
-const participantController = require("./controllers/participants.controller");
-const participantBuisness = require("./buisness/participants.business");
-const ParticipantsRepository = require("./repositories/participantRepository.pg");
-const participantsRepository = new ParticipantsRepository();
+const dishRoutes = require("./routes/dishes.route");
+const dishController = require("./controllers/dishes.controller");
+const dishBusiness = require("./business/dishes.business");
+const DishesRepository = require("./repositories/DishesRepository.pg");
+const dishesRepository = new DishesRepository();
 
 // ============================================================================================================================================================================
 const cookieParser = require("cookie-parser");
@@ -36,19 +30,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // ============================================================================================================================================================================
 
 app.use(
-  "/tournaments",
-  tournamentRoutes(
-    express,
-    tournamentController(tournamentBuisness(tournamentsRepository))
-  )
-);
-
-app.use(
-  "/participants",
-  participantRoutes(
-    express,
-    participantController(participantBuisness(participantsRepository))
-  )
+  "/dishes",
+  dishRoutes(express, dishController(dishBusiness(dishesRepository)))
 );
 
 server.listen(port, () => {

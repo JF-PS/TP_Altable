@@ -84,6 +84,52 @@
             },
             "indexes": []
         },
+        "Dishes": {
+            "tableName": "Dishes",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "price": {
+                    "field": "price",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "quantity": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "quantity",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Figures": {
             "tableName": "Figures",
             "schema": {
@@ -305,8 +351,8 @@
             "indexes": []
         }
     },
-    "path": "D:\\Noël\\Wina\\winapedia\\Api archi logicielle\\migrations\\_current.json",
-    "backupPath": "D:\\Noël\\Wina\\winapedia\\Api archi logicielle\\migrations\\_current_bak.json",
+    "path": "C:\\Users\\JF-PS\\Documents\\Master Ynov\\Majeur\\Architecture Logicielle\\Altable_project\\migrations\\_current.json",
+    "backupPath": "C:\\Users\\JF-PS\\Documents\\Master Ynov\\Majeur\\Architecture Logicielle\\Altable_project\\migrations\\_current_bak.json",
     "exists": false,
     "revision": 1
 }
