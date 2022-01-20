@@ -1,44 +1,39 @@
-const mockTournamentService = require("../mock/TournamentRepository.mock");
-jest.mock("../mock/TournamentRepository.mock", () => ({
+const mockDishService = require("../mock/DishRepository.mock");
+jest.mock("../mock/DishRepository.mock", () => ({
   getByName: jest.fn(),
-  getById: jest.fn(),
   create: jest.fn(),
 }));
 
-const tournamentController = require("../controllers/tournaments.controller");
-const tournamentBuisness = require("../buisness/tournaments.buisness");
-const buisness = tournamentBuisness(mockTournamentService);
+const dishBusiness = require("../business/dishes.business");
+const business = dishBusiness(mockDishService);
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Check Tournament Business ", () => {
-  test("if create tournament Ok", async () => {
+describe("Check Dish Business ", () => {
+  test("if create dish Ok", async () => {
     // Arrange
-    mockTournamentService.getByName.mockReturnValue(false);
-    mockTournamentService.create.mockReturnValue(true);
-    const result = await buisness.create({ nom: "Morgane" });
+    mockDishService.getByName.mockReturnValue(false);
+    mockDishService.create.mockReturnValue(true);
+    const result = await business.create({
+      type: "Apéritif",
+      name: "MorganeT25",
+    });
 
     // Assert
-    expect(result).toBe(true);
+    expect(result.response).toBe(true);
   });
 
-  test("if create tournament not Ok", async () => {
+  test("if create dish not Ok", async () => {
     // Arrange
-    mockTournamentService.getByName.mockReturnValue(true);
-    const result = await buisness.create({ nom: "Morgane" });
+    mockDishService.getByName.mockReturnValue(true);
+    const result = await business.create({
+      type: "Apéritif",
+      name: "MorganeT25",
+    });
 
     // Assert
-    expect(result.message).toBe("This name already exists");
-  });
-
-  test("if read tournament Ok", async () => {
-    // Arrange
-    mockTournamentService.getById.mockReturnValue(true);
-    const result = await buisness.getById(125);
-
-    // Assert
-    expect(result).toBe(true);
+    expect(result.response).toBe("This name already exists");
   });
 });
