@@ -13,7 +13,6 @@ afterEach(() => {
 
 describe("Check Dish Business ", () => {
   test("if create dish Ok", async () => {
-    // Arrange
     mockDishService.getByName.mockReturnValue(false);
     mockDishService.create.mockReturnValue(true);
     const result = await business.create({
@@ -21,19 +20,16 @@ describe("Check Dish Business ", () => {
       name: "MorganeT25",
     });
 
-    // Assert
     expect(result.response).toBe(true);
   });
 
   test("if create dish not Ok", async () => {
-    // Arrange
     mockDishService.getByName.mockReturnValue(true);
     const result = await business.create({
       type: "Apéritif",
       name: "MorganeT25",
     });
 
-    // Assert
     expect(result.response).toBe("This name already exists");
   });
 });
