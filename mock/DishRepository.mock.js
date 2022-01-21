@@ -1,5 +1,6 @@
 module.exports = class DishesRepository {
   constructor() {}
   create(formData) {}
-  getByName(nom) {}
+  getByName(name) {}
+  getAll(dishes) {}
 };

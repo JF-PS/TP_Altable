@@ -27,4 +27,16 @@ module.exports = class DishesRepository {
         });
     });
   }
+
+  async getAll() {
+    return await new Promise((resolve, reject) => {
+      Dish.findAll()
+        .then((dishes) => {
+          resolve(dishes);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 };
