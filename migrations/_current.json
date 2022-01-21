@@ -1,89 +1,5 @@
 {
     "tables": {
-        "Articles": {
-            "tableName": "Articles",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "themeId": {
-                    "field": "themeId",
-                    "allowNull": true,
-                    "references": {
-                        "model": "Themes",
-                        "key": "id"
-                    },
-                    "onDelete": "NO ACTION",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "title": {
-                    "field": "title",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "description": {
-                    "field": "description",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Definitions": {
-            "tableName": "Definitions",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "sectionId": {
-                    "field": "sectionId",
-                    "allowNull": true,
-                    "references": {
-                        "model": "Sections",
-                        "key": "id"
-                    },
-                    "onDelete": "NO ACTION",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "field": {
-                    "field": "field",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "value": {
-                    "field": "value",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
         "Dishes": {
             "tableName": "Dishes",
             "schema": {
@@ -130,8 +46,8 @@
             },
             "indexes": []
         },
-        "Figures": {
-            "tableName": "Figures",
+        "Services": {
+            "tableName": "Services",
             "schema": {
                 "id": {
                     "allowNull": false,
@@ -140,202 +56,13 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "themeId": {
-                    "field": "themeId",
-                    "allowNull": true,
-                    "references": {
-                        "model": "Themes",
-                        "key": "id"
-                    },
-                    "onDelete": "NO ACTION",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "title": {
-                    "field": "title",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "description": {
-                    "field": "description",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "picture": {
-                    "field": "picture",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "order": {
-                    "field": "order",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
+                "startDate": {
+                    "field": "startDate",
                     "seqType": "Sequelize.DATE"
                 },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
+                "endDate": {
+                    "field": "endDate",
                     "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Participants": {
-            "tableName": "Participants",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "name": {
-                    "field": "name",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "nb_points": {
-                    "field": "nb_points",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Sections": {
-            "tableName": "Sections",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "themeId": {
-                    "field": "themeId",
-                    "allowNull": true,
-                    "references": {
-                        "model": "Themes",
-                        "key": "id"
-                    },
-                    "onDelete": "NO ACTION",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "title": {
-                    "field": "title",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Themes": {
-            "tableName": "Themes",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "title": {
-                    "field": "title",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "description": {
-                    "field": "description",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Tournaments": {
-            "tableName": "Tournaments",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "nom": {
-                    "field": "nom",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "nb_participants": {
-                    "field": "nb_participants",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "nb_max_participants": {
-                    "field": "nb_max_participants",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "Users": {
-            "tableName": "Users",
-            "schema": {
-                "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "login": {
-                    "field": "login",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "password": {
-                    "field": "password",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "role": {
-                    "field": "role",
-                    "seqType": "Sequelize.TEXT"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -351,8 +78,8 @@
             "indexes": []
         }
     },
-    "path": "C:\\Users\\JF-PS\\Documents\\Master Ynov\\Majeur\\Architecture Logicielle\\Altable_project\\migrations\\_current.json",
-    "backupPath": "C:\\Users\\JF-PS\\Documents\\Master Ynov\\Majeur\\Architecture Logicielle\\Altable_project\\migrations\\_current_bak.json",
+    "path": "C:\\Projects\\TP_Altable\\migrations\\_current.json",
+    "backupPath": "C:\\Projects\\TP_Altable\\migrations\\_current_bak.json",
     "exists": false,
     "revision": 1
 }
