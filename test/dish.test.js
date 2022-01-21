@@ -2,6 +2,7 @@ const mockDishService = require("../mock/DishRepository.mock");
 jest.mock("../mock/DishRepository.mock", () => ({
   getByName: jest.fn(),
   create: jest.fn(),
+  getAll: jest.fn(),
 }));
 
 const dishBusiness = require("../business/dishes.business");
@@ -11,7 +12,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Check Dish Business ", () => {
+describe("Check Dish Business", () => {
   test("if create dish Ok", async () => {
     mockDishService.getByName.mockReturnValue(false);
     mockDishService.create.mockReturnValue(true);
@@ -31,5 +32,12 @@ describe("Check Dish Business ", () => {
     });
 
     expect(result.response).toBe("This name already exists");
+  });
+
+   test("if list dishes not Ok", async () => {
+    mockDishService.getAll.mockReturnValue(true);
+    const result = await business.getAll();
+
+    expect(result).toBe(true);
   });
 });
