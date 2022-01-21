@@ -1,4 +1,5 @@
 const Dish = require("../models").Dishes;
+const { Op } = require("sequelize");
 
 module.exports = class DishesRepository {
   async create(dish) {
@@ -48,6 +49,24 @@ module.exports = class DishesRepository {
   async getAll() {
     return await new Promise((resolve, reject) => {
       Dish.findAll()
+        .then((dishes) => {
+          resolve(dishes);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  async getAllPositiveQuantity() {
+    return await new Promise((resolve, reject) => {
+      Dish.findAll({
+        where: {
+          quantity:{
+            [Op.gte]: 1
+          }
+        }
+      })
         .then((dishes) => {
           resolve(dishes);
         })

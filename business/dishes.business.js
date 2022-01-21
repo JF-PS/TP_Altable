@@ -21,10 +21,14 @@ module.exports = (repository) => ({
   },
 
   async updateQuantity(id, quantity) {
-    return await repository.updateQuantity(id, quantity);
+    return await repository.updateQuantity(id, quantity.quantity);
   },
 
   async getAll(dishes) {
     return await repository.getAll(dishes);
+  },
+
+  async getAllPositiveQuantity(dishes) {
+    return await repository.getAllPositiveQuantity(dishes);
   },
 });
