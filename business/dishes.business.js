@@ -20,6 +20,10 @@ module.exports = (repository) => ({
     return { status: 400, response: "This type doesn't exists" };
   },
 
+  async updateQuantity(id, quantity) {
+    return await repository.updateQuantity(id, quantity);
+  },
+
   async getAll(dishes) {
     return await repository.getAll(dishes);
   },

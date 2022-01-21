@@ -28,6 +28,23 @@ module.exports = class DishesRepository {
     });
   }
 
+  async updateQuantity(id, quantity) {
+    return await new Promise((resolve, reject) => {
+      Dish.findOne({
+        where: { id },
+      })
+        .then((dish) => {
+          resolve(
+            dish.update({ quantity })
+          );
+        })
+        .catch((err) => {
+          console.log(err)
+          reject(err);
+        });
+    });
+  }
+
   async getAll() {
     return await new Promise((resolve, reject) => {
       Dish.findAll()

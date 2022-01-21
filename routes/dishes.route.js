@@ -2,7 +2,8 @@ module.exports = (express, controller) => {
   const router = express.Router();
 
   router.post("/", controller.create);
-  router.get("/", controller.getAll)
+  router.put("/:id", controller.updateQuantity);
+  router.get("/", controller.getAll);
 
   return router;
 };

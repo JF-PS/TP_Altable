@@ -3,4 +3,5 @@ module.exports = class DishesRepository {
   create(formData) {}
   getByName(name) {}
   getAll(dishes) {}
+  updateQuantity(dish) {}
 };

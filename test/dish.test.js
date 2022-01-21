@@ -3,6 +3,7 @@ jest.mock("../mock/DishRepository.mock", () => ({
   getByName: jest.fn(),
   create: jest.fn(),
   getAll: jest.fn(),
+  updateQuantity: jest.fn(),
 }));
 
 const dishBusiness = require("../business/dishes.business");
@@ -37,6 +38,13 @@ describe("Check Dish Business", () => {
    test("if list dishes not Ok", async () => {
     mockDishService.getAll.mockReturnValue(true);
     const result = await business.getAll();
+
+    expect(result).toBe(true);
+  });
+
+  test("if update quantity not Ok", async () => {
+    mockDishService.updateQuantity.mockReturnValue(true);
+    const result = await business.updateQuantity();
 
     expect(result).toBe(true);
   });

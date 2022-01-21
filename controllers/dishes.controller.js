@@ -12,6 +12,23 @@ module.exports = (buisness) => ({
       });
   },
 
+    async updateQuantity(req, res) {
+    await buisness
+      .updateQuantity(req.params.id, req.body.quantity)
+      .then((dishQuantity) => {
+        if (dishQuantity) {
+          res.status(200).json(dish);
+        } else {
+          res
+            .status(404)
+            .json({ message: `No entry found for id(${req.params.id, req.body.quantity})` });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  },
+
     async getAll(req, res) {
     await buisness
       .getAll(req.params.id)
