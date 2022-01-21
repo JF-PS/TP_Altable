@@ -36,16 +36,23 @@ describe("Check Dish Business", () => {
     expect(result.response).toBe("This name already exists");
   });
 
-   test("if list dishes not Ok", async () => {
+  test("if update quantity not Ok", async () => {
+    mockDishService.updateQuantity.mockReturnValue(true);
+    const result = await business.updateQuantity();
+
+    expect(result).toBe(true);
+  });
+
+  test("if list dishes not Ok", async () => {
     mockDishService.getAll.mockReturnValue(true);
     const result = await business.getAll();
 
     expect(result).toBe(true);
   });
 
-  test("if update quantity not Ok", async () => {
-    mockDishService.updateQuantity.mockReturnValue(true);
-    const result = await business.updateQuantity();
+  test("if list dishes with quantity superior or equal to 1 not Ok", async () => {
+    mockDishService.getAllPositiveQuantity.mockReturnValue(true);
+    const result = await business.getAllPositiveQuantity();
 
     expect(result).toBe(true);
   });

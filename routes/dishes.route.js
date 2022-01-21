@@ -4,5 +4,5 @@ module.exports = (express, controller) => {
   router.post("/", controller.create);
   router.put("/:id", controller.updateQuantity);
   router.get("/", controller.getAll);
-  return router;
+  router.get("/menu", controller.getAllPositiveQuantity);  return router;
 };

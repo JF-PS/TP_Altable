@@ -45,4 +45,21 @@ module.exports = (buisness) => ({
         res.status(500).json({ error: err });
       });
   },
+
+  async getAllPositiveQuantity(req, res) {
+    await buisness
+      .getAllPositiveQuantity(req.params.id)
+      .then((dishes) => {
+        if (dishes) {
+          res.status(200).json(dishes);
+        } else {
+          res
+            .status(404)
+            .json({ message: `No entry found for id(${req.params.id})` });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err });
+      });
+  },
 });

@@ -4,4 +4,5 @@ module.exports = class DishesRepository {
   getByName(name) {}
   getAll(dishes) {}
   updateQuantity(dish) {}
+  getAllPositiveQuantity(dishes) {}
 };
