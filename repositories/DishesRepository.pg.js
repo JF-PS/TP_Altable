@@ -30,17 +30,16 @@ module.exports = class DishesRepository {
   }
 
   async updateQuantity(id, quantity) {
+    console.log(id, quantity);
     return await new Promise((resolve, reject) => {
       Dish.findOne({
         where: { id },
       })
         .then((dish) => {
-          resolve(
-            dish.update({ quantity })
-          );
+          resolve(dish.update({ quantity }));
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           reject(err);
         });
     });
@@ -62,10 +61,10 @@ module.exports = class DishesRepository {
     return await new Promise((resolve, reject) => {
       Dish.findAll({
         where: {
-          quantity:{
-            [Op.gte]: 1
-          }
-        }
+          quantity: {
+            [Op.gte]: 1,
+          },
+        },
       })
         .then((dishes) => {
           resolve(dishes);

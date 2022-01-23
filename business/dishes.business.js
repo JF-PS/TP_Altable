@@ -21,7 +21,7 @@ module.exports = (repository) => ({
   },
 
   async updateQuantity(id, quantity) {
-    return await repository.updateQuantity(id, quantity.quantity);
+    return await repository.updateQuantity(id, quantity);
   },
 
   async getAll(dishes) {
