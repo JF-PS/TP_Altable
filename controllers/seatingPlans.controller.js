@@ -9,7 +9,10 @@ module.exports = (buisness) => ({
     await buisness
       .create(new SeatingPlan(listeTables, startDate, endDate))
       .then((seatingPlan) => {
-        res.status(seatingPlan.status).send(seatingPlan.response);
+        if (typeof seatingPlan === "string") {
+          res.status(400).send(seatingPlan);
+        }
+        res.status(201).send(seatingPlan);
       })
       .catch((err) => {
         res.status(500).send(err);

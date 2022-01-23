@@ -21,19 +21,11 @@ module.exports = (repository) => ({
           service.id,
           seatingPlan.listesTable
         );
-        const myService = await repository.getServiceById(service.id);
-        return { status: 201, response: myService };
+        return await repository.getServiceById(service.id);
       }
-      return {
-        status: 201,
-        response:
-          "Error: Il existe déjà un plan sur cette tranches horraires !",
-      };
+      return "There is already a plan for this time slot !";
     }
-    return {
-      status: 201,
-      response: "Error: You gave a non-existent table number",
-    };
+    return "You gave a non-existent table number";
   },
 
   async getById(id) {
