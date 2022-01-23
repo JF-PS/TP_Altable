@@ -27,6 +27,7 @@ describe("Check Dish Business", () => {
 
   test("if create dish not Ok", async () => {
     mockDishService.getByName.mockReturnValue(true);
+
     const result = await business.create({
       type: "Apéritif",
       name: "MorganeT25",
