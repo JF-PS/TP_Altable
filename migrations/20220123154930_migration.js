@@ -4,16 +4,16 @@ const Sequelize = require("sequelize");
  * Actions summary:
  *
  * createTable() => "Dishes", deps: []
- * createTable() => "SeatingPlans", deps: []
+ * createTable() => "Services", deps: []
  * createTable() => "Tables", deps: []
- * createTable() => "SeatingPlansTables", deps: [SeatingPlans, Tables]
+ * createTable() => "SeatingPlans", deps: [Services, Tables]
  *
  */
 
 const info = {
   revision: 1,
   name: "migration",
-  created: "2022-01-23T13:13:40.281Z",
+  created: "2022-01-23T15:49:30.325Z",
   comment: "",
 };
 
@@ -56,7 +56,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "SeatingPlans",
+      "Services",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -65,8 +65,8 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
-        dateMin: { type: Sequelize.DATE, field: "dateMin" },
-        dateMax: { type: Sequelize.DATE, field: "dateMax" },
+        startDate: { type: Sequelize.DATE, field: "startDate" },
+        endDate: { type: Sequelize.DATE, field: "endDate" },
         createdAt: {
           type: Sequelize.DATE,
           field: "createdAt",
@@ -111,7 +111,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "SeatingPlansTables",
+      "SeatingPlans",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -120,13 +120,13 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
-        seatingPlanId: {
+        serviceId: {
           type: Sequelize.INTEGER,
           onUpdate: "CASCADE",
-          onDelete: "CASCADE",
-          references: { model: "SeatingPlans", key: "id" },
+          onDelete: "NO ACTION",
+          references: { model: "Services", key: "id" },
           allowNull: true,
-          field: "seatingPlanId",
+          field: "serviceId",
         },
         numTable: {
           type: Sequelize.INTEGER,
@@ -164,7 +164,7 @@ const rollbackCommands = (transaction) => [
   },
   {
     fn: "dropTable",
-    params: ["SeatingPlansTables", { transaction }],
+    params: ["Services", { transaction }],
   },
   {
     fn: "dropTable",

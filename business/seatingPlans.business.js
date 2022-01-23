@@ -16,15 +16,13 @@ module.exports = (repository) => ({
       isSchedule = await repository.checkSchedulePlan(seatingPlan);
 
       if (isEmpty(isSchedule)) {
-        const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);
+        const service = await repository.createService(seatingPlan);
         await repository.addTableToSeatingPlan(
-          newSeatingPlan.id,
+          service.id,
           seatingPlan.listesTable
         );
-        const mySeatingPlans = await repository.getSeatingPlanById(
-          newSeatingPlan.id
-        );
-        return { status: 201, response: mySeatingPlans };
+        const myService = await repository.getServiceById(service.id);
+        return { status: 201, response: myService };
       }
       return {
         status: 201,
@@ -39,6 +37,6 @@ module.exports = (repository) => ({
   },
 
   async getById(id) {
-    return await repository.getSeatingPlanById(id);
+    return await repository.getServiceById(id);
   },
 });

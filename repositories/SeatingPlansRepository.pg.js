@@ -1,8 +1,8 @@
-const SeatingPlans = require("../models").SeatingPlans;
+const Services = require("../models").Services;
 const Tables = require("../models").Tables;
-const SeatingPlansTables = require("../models").SeatingPlansTables;
+const SeatingPlans = require("../models").SeatingPlans;
 const { isEmpty } = require("lodash");
-const { Sequelize, Op, QueryTypes } = require("sequelize");
+const { Op } = require("sequelize");
 
 module.exports = class SeatingPlansRepository {
   async getNbNumTable(numTableList) {
@@ -20,32 +20,18 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async checkSchedulePlan(seatingPlan) {
-    const { dateMin, dateMax } = seatingPlan;
+  async checkSchedulePlan(service) {
+    const { startDate } = service;
     return await new Promise((resolve, reject) => {
-      SeatingPlans.findAll({
-        // where: {
-        //   [Op.or]: [
-        //     {
-        //       dateMin: {
-        //         [Op.between]: [dateMin, dateMax],
-        //       },
-        //     },
-        //     {
-        //       dateMax: {
-        //         [Op.between]: [dateMin, dateMax],
-        //       },
-        //     },
-        //   ],
-        // },
+      Services.findAll({
         where: {
-          dateMax: {
-            [Op.gt]: dateMin,
+          endDate: {
+            [Op.gt]: startDate,
           },
         },
       })
-        .then((nbNumTable) => {
-          resolve(nbNumTable);
+        .then((servicesExists) => {
+          resolve(servicesExists);
         })
         .catch((err) => {
           console.log(err);
@@ -54,12 +40,12 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async createSeatingPlan(seatingPlan) {
-    const { dateMin, dateMax } = seatingPlan;
+  async createService(service) {
+    const { startDate, endDate } = service;
     return await new Promise((resolve, reject) => {
-      SeatingPlans.create({ dateMin, dateMax })
-        .then((newSeatingPlan) => {
-          resolve(newSeatingPlan);
+      Services.create({ startDate, endDate })
+        .then((newService) => {
+          resolve(newService);
         })
         .catch((err) => {
           console.log(err);
@@ -68,13 +54,13 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async addTableToSeatingPlan(seatingPlanId, listTables) {
+  async addTableToSeatingPlan(serviceId, listTables) {
     return await new Promise((resolve, reject) => {
       listTables.map((table) => {
-        SeatingPlansTables.create({
+        SeatingPlans.create({
           numTable: table.numTable,
           nbGuests: table.nbGuests,
-          seatingPlanId,
+          serviceId,
         })
           .then((addTable) => {
             resolve(addTable);
@@ -87,16 +73,15 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async getSeatingPlanById(id) {
+  async getServiceById(id) {
     return await new Promise((resolve, reject) => {
-      console.log(id);
-      SeatingPlans.findOne({
-        attributes: ["id", "dateMin", "dateMax"],
+      Services.findOne({
+        attributes: ["id", "startDate", "endDate"],
         include: [
           {
-            model: SeatingPlansTables,
-            as: "seating_plan_tables",
-            attributes: ["seatingPlanId", "numTable", "nbGuests"],
+            model: SeatingPlans,
+            as: "services_seating_plan",
+            attributes: ["serviceId", "numTable", "nbGuests"],
           },
         ],
         where: { id },

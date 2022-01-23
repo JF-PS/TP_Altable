@@ -1,13 +1,13 @@
 module.exports = (buisness) => ({
   async create(req, res) {
-    const { listeTables, dateMin, dateMax } = req.body;
+    const { listeTables, startDate, endDate } = req.body;
     const Table = require("../expositions/table");
     const SeatingPlan = require("../expositions/seatingPlan");
 
     listeTables.map((table) => new Table(table.numTable, table.nbGuests));
 
     await buisness
-      .create(new SeatingPlan(listeTables, dateMin, dateMax))
+      .create(new SeatingPlan(listeTables, startDate, endDate))
       .then((seatingPlan) => {
         res.status(seatingPlan.status).send(seatingPlan.response);
       })

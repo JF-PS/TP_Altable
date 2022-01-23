@@ -1,7 +1,7 @@
 module.exports = class SeatingPlan {
-  constructor(listesTable, dateMin, dateMax) {
+  constructor(listesTable, startDate, endDate) {
     this.listesTable = listesTable;
-    this.dateMin = dateMin;
-    this.dateMax = dateMax;
+    this.startDate = startDate;
+    this.endDate = endDate;
   }
 };

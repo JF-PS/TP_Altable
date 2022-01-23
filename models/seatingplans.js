@@ -3,9 +3,15 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SeatingPlans extends Model {
     static associate(models) {
-      SeatingPlans.hasMany(models.SeatingPlansTables, {
-        foreignKey: "seatingPlanId",
-        as: "seating_plan_tables",
+      SeatingPlans.belongsTo(models.Tables, {
+        foreignKey: "numTable",
+        as: "table",
+        allowNull: true,
+      });
+
+      SeatingPlans.belongsTo(models.Services, {
+        foreignKey: "serviceId",
+        as: "services",
         allowNull: true,
       });
     }
@@ -18,8 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      dateMin: DataTypes.DATE,
-      dateMax: DataTypes.DATE,
+      serviceId: DataTypes.INTEGER,
+      numTable: DataTypes.INTEGER,
+      nbGuests: DataTypes.INTEGER,
     },
     {
       sequelize,
