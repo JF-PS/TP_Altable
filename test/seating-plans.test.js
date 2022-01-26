@@ -76,7 +76,7 @@ describe("Check SeatingPlans Business", () => {
     await controller.create(req, res);
 
     // Assert
-    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.status).toHaveBeenCalledWith(412);
     expect(res.json).toHaveBeenCalledWith({
       message: "You gave a non-existent table number",
     });
