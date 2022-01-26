@@ -10,13 +10,6 @@ module.exports = (repository) => ({
     const nbNumTable = await repository.getNbNumTable(numTableList);
     const allNumTableExist = nbNumTable === numTableList.length;
 
-    console.log(
-      "************************************************************************"
-    );
-    console.log(nbNumTable);
-    console.log(numTableList.length);
-    console.log(allNumTableExist);
-
     if (allNumTableExist) {
       console.log("test");
       const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);

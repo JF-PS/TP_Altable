@@ -5,5 +5,4 @@ module.exports = class SeatingPlanRepository {
   addTableToSeatingPlan(seatingPlanId, listTables) {}
   getSeatingPlanById(id) {}
   updateSeatingPlanFreeze(id, freeze) {}
-  getAllPositiveQuantity() {}
 };

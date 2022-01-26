@@ -12,17 +12,17 @@ module.exports = (servicesRepository, seatingPlansRepository) => ({
         const { id, freeze } = seatingPlan;
         if (!freeze) {
           const newService = await servicesRepository.createService(service);
-          const test = await seatingPlansRepository.updateSeatingPlanFreeze(
-            id,
-            !freeze
+          await seatingPlansRepository.updateSeatingPlanFreeze(id, !freeze);
+          const theService = await servicesRepository.getServiceById(
+            newService.id
           );
-          return await servicesRepository.getServiceById(newService.id);
+          return { theService };
         }
-        return "The seating plan is already fixed !";
+        return { errorMessage: "The seating plan is already fixed !" };
       }
-      return "The seating plan id given does not exist !";
+      return { errorMessage: "The seating plan id given does not exist !" };
     }
-    return "There is already a plan for this time slot !";
+    return { errorMessage: "There is already a plan for this time slot !" };
   },
 
   async getById(id) {

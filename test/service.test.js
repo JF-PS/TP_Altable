@@ -1,14 +1,20 @@
 const mockSeatingPlanService = require("../mock/SeatingPlanRepository.mock");
+const mockServiceService = require("../mock/ServiceRepository.mock");
 const { mockRequest, mockResponse } = require("jest-mock-req-res");
-const seatingPlanBusiness = require("../business/seatingPlans.business");
-const seatingController = require("../controllers/seatingPlans.controller");
-const business = seatingPlanBusiness(mockSeatingPlanService);
-const controller = seatingController(business);
+
+const serviceBusiness = require("../business/services.business");
+const serviceController = require("../controllers/services.controller");
+const business = serviceBusiness(mockServiceService, mockSeatingPlanService);
+const controller = serviceController(business);
+
+jest.mock("../mock/ServiceRepository.mock", () => ({
+  checkSchedulePlan: jest.fn(),
+  createService: jest.fn(),
+  getServiceById: jest.fn(),
+}));
 
 jest.mock("../mock/SeatingPlanRepository.mock", () => ({
-  getNbNumTable: jest.fn(),
-  createSeatingPlan: jest.fn(),
-  addTableToSeatingPlan: jest.fn(),
+  updateSeatingPlanFreeze: jest.fn(),
   getSeatingPlanById: jest.fn(),
 }));
 
@@ -16,69 +22,102 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Check SeatingPlans Business", () => {
-  test("if create seatingPlans Ok", async () => {
+describe("Check Services", () => {
+  test("if create Service Ok", async () => {
     // Arrange
     const req = mockRequest({
       body: {
-        listeTables: [
-          {
-            numTable: 1,
-            nbGuests: 1,
-          },
-        ],
+        startDate: "2022-01-01 12:00",
+        endDate: "2022-01-01 14:00",
+        seatingPlanId: 1,
       },
     });
     const res = mockResponse();
-    const expected = {
+    mockServiceService.checkSchedulePlan.mockReturnValue([]);
+    mockSeatingPlanService.getSeatingPlanById.mockReturnValue({
       id: 1,
       freeze: false,
-      tables: [
-        {
-          seatingPlanId: 1,
-          numTable: 1,
-          nbGuests: 1,
-        },
-      ],
-    };
-
-    mockSeatingPlanService.getNbNumTable.mockReturnValue(1);
-    mockSeatingPlanService.createSeatingPlan.mockReturnValue(true);
-    mockSeatingPlanService.addTableToSeatingPlan.mockReturnValue(true);
-    mockSeatingPlanService.getSeatingPlanById.mockReturnValue(expected);
+    });
+    mockServiceService.createService.mockReturnValue(true);
+    mockSeatingPlanService.updateSeatingPlanFreeze.mockReturnValue(true);
+    mockServiceService.getServiceById.mockReturnValue(true);
 
     // Act
     await controller.create(req, res);
 
     // Assert
     expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith({ seatingPlan: expected });
-    expect(mockSeatingPlanService.getSeatingPlanById).toHaveBeenCalledTimes(1);
+    expect(res.json).toHaveBeenCalledWith({ service: true });
   });
 
-  test("if numTable don't exist", async () => {
+  test("if seating plan already fixed", async () => {
     // Arrange
     const req = mockRequest({
       body: {
-        listeTables: [
-          {
-            numTable: 1,
-            nbGuests: 1,
-          },
-        ],
+        startDate: "2022-01-01 12:00",
+        endDate: "2022-01-01 14:00",
+        seatingPlanId: 1,
       },
     });
     const res = mockResponse();
-
-    mockSeatingPlanService.getNbNumTable.mockReturnValue(0);
+    mockServiceService.checkSchedulePlan.mockReturnValue([]);
+    mockSeatingPlanService.getSeatingPlanById.mockReturnValue({
+      id: 1,
+      freeze: true,
+    });
 
     // Act
     await controller.create(req, res);
 
     // Assert
-    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.status).toHaveBeenCalledWith(412);
     expect(res.json).toHaveBeenCalledWith({
-      message: "You gave a non-existent table number",
+      message: "The seating plan is already fixed !",
+    });
+  });
+
+  test("if seating plan id not exist", async () => {
+    // Arrange
+    const req = mockRequest({
+      body: {
+        startDate: "2022-01-01 12:00",
+        endDate: "2022-01-01 14:00",
+        seatingPlanId: 54598656,
+      },
+    });
+    const res = mockResponse();
+    mockServiceService.checkSchedulePlan.mockReturnValue([]);
+    mockSeatingPlanService.getSeatingPlanById.mockReturnValue({});
+
+    // Act
+    await controller.create(req, res);
+
+    // Assert
+    expect(res.status).toHaveBeenCalledWith(412);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "The seating plan id given does not exist !",
+    });
+  });
+
+  test("if schedule overlap", async () => {
+    // Arrange
+    const req = mockRequest({
+      body: {
+        startDate: "2022-01-01 12:00",
+        endDate: "2022-01-01 14:00",
+        seatingPlanId: 1,
+      },
+    });
+    const res = mockResponse();
+    mockServiceService.checkSchedulePlan.mockReturnValue([true]);
+
+    // Act
+    await controller.create(req, res);
+
+    // Assert
+    expect(res.status).toHaveBeenCalledWith(412);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "There is already a plan for this time slot !",
     });
   });
 });

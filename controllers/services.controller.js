@@ -4,14 +4,14 @@ module.exports = (buisness) => ({
     const Service = require("../expositions/service");
     await buisness
       .create(new Service(startDate, endDate, seatingPlanId))
-      .then((service) => {
-        if (typeof service === "string") {
-          res.status(400).send(service);
+      .then((response) => {
+        if (response.errorMessage != null) {
+          res.status(412).json({ message: response.errorMessage });
         }
-        res.status(201).send(service);
+        res.status(201).json({ service: response.theService });
       })
       .catch((err) => {
-        res.status(500).send(err);
+        res.status(500).json(err);
       });
   },
 
