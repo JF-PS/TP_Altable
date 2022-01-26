@@ -2,7 +2,7 @@
   "name": "node-sequelize",
   "version": "1.0.0",
   "private": true,
-  "description": "Api du voyageur",
+  "description": "Api Alt'Able",
   "scripts": {
     "start": "npm cache clean --force & node ./bin/www",
     "test": "jest"
