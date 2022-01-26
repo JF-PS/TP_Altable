@@ -4,6 +4,7 @@ jest.mock("../mock/DishRepository.mock", () => ({
   create: jest.fn(),
   getAll: jest.fn(),
   updateQuantity: jest.fn(),
+  getAllPositiveQuantity: jest.fn(),
 }));
 
 const dishBusiness = require("../business/dishes.business");
@@ -22,7 +23,7 @@ describe("Check Dish Business", () => {
       name: "MorganeT25",
     });
 
-    expect(result.response).toBe(true);
+    expect(result).toBe(true);
   });
 
   test("if create dish not Ok", async () => {
@@ -33,7 +34,7 @@ describe("Check Dish Business", () => {
       name: "MorganeT25",
     });
 
-    expect(result.response).toBe("This name already exists");
+    expect(result).toBe("This name already exists");
   });
 
   test("if update quantity not Ok", async () => {
@@ -53,7 +54,6 @@ describe("Check Dish Business", () => {
   test("if list dishes with quantity superior or equal to 1 not Ok", async () => {
     mockDishService.getAllPositiveQuantity.mockReturnValue(true);
     const result = await business.getAllPositiveQuantity();
-
     expect(result).toBe(true);
   });
 });

@@ -30,7 +30,6 @@ module.exports = class DishesRepository {
   }
 
   async updateQuantity(id, quantity) {
-    console.log(id, quantity);
     return await new Promise((resolve, reject) => {
       Dish.findOne({
         where: { id },

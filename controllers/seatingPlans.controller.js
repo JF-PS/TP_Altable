@@ -1,21 +1,23 @@
+const Table = require("../expositions/table");
+const SeatingPlan = require("../expositions/seatingPlan");
+
 module.exports = (buisness) => ({
   async create(req, res) {
-    const { listeTables, startDate, endDate } = req.body;
-    const Table = require("../expositions/table");
-    const SeatingPlan = require("../expositions/seatingPlan");
+    const { listeTables } = req.body;
 
     listeTables.map((table) => new Table(table.numTable, table.nbGuests));
+    const freeze = false;
 
     await buisness
-      .create(new SeatingPlan(listeTables, startDate, endDate))
-      .then((seatingPlan) => {
-        if (typeof seatingPlan === "string") {
-          res.status(400).send(seatingPlan);
+      .create(new SeatingPlan(listeTables, freeze))
+      .then((response) => {
+        if (response.errorMessage != null) {
+          res.status(412).json({ message: response.errorMessage });
         }
-        res.status(201).send(seatingPlan);
+        res.status(201).json({ seatingPlan: response.seating_plan });
       })
       .catch((err) => {
-        res.status(500).send(err);
+        res.status(500).json(err);
       });
   },
 

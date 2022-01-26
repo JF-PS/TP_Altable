@@ -5,7 +5,10 @@ module.exports = (buisness) => ({
     await buisness
       .create(new Dish(name, description, type, price, quantity))
       .then((dish) => {
-        res.status(dish.status).send(dish.response);
+        if (typeof dish === "string") {
+          res.status(400).send(dish);
+        }
+        res.status(201).send(dish);
       })
       .catch((err) => {
         res.status(500).send(err);
@@ -19,13 +22,11 @@ module.exports = (buisness) => ({
         if (dishQuantity) {
           res.status(200).json(dishQuantity);
         } else {
-          res
-            .status(404)
-            .json({
-              message: `No entry found for id(${
-                (req.params.id, req.body.quantity)
-              })`,
-            });
+          res.status(404).json({
+            message: `No entry found for id(${
+              (req.params.id, req.body.quantity)
+            })`,
+          });
         }
       })
       .catch((err) => {

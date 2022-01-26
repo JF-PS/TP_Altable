@@ -10,14 +10,13 @@ module.exports = (repository) => ({
 
     const types = [APERITIF, ENTREE, PLAT_PRINCIPAL, DESSERT, BOISSON];
 
-    if (currentDish)
-      return { status: 400, response: "This name already exists" };
+    if (currentDish) return "This name already exists";
 
     if (types.includes(dish.type)) {
       const createDish = await repository.create(dish);
-      return { status: 201, response: createDish };
+      return createDish;
     }
-    return { status: 400, response: "This type doesn't exists" };
+    return "This type doesn't exists";
   },
 
   async updateQuantity(id, quantity) {

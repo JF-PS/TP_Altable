@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      numTable: DataTypes.INTEGER,
     },
     {
       sequelize,

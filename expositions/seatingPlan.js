@@ -1,7 +1,6 @@
 module.exports = class SeatingPlan {
-  constructor(listesTable, startDate, endDate) {
+  constructor(listesTable, freeze) {
     this.listesTable = listesTable;
-    this.startDate = startDate;
-    this.endDate = endDate;
+    this.freeze = freeze;
   }
 };

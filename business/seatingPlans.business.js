@@ -1,5 +1,3 @@
-const { isEmpty } = require("lodash");
-
 module.exports = (repository) => ({
   async create(seatingPlan) {
     let numTableList = [];
@@ -12,23 +10,30 @@ module.exports = (repository) => ({
     const nbNumTable = await repository.getNbNumTable(numTableList);
     const allNumTableExist = nbNumTable === numTableList.length;
 
-    if (allNumTableExist) {
-      isSchedule = await repository.checkSchedulePlan(seatingPlan);
+    console.log(
+      "************************************************************************"
+    );
+    console.log(nbNumTable);
+    console.log(numTableList.length);
+    console.log(allNumTableExist);
 
-      if (isEmpty(isSchedule)) {
-        const service = await repository.createService(seatingPlan);
-        await repository.addTableToSeatingPlan(
-          service.id,
-          seatingPlan.listesTable
-        );
-        return await repository.getServiceById(service.id);
-      }
-      return "There is already a plan for this time slot !";
+    if (allNumTableExist) {
+      console.log("test");
+      const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);
+
+      await repository.addTableToSeatingPlan(
+        newSeatingPlan.id,
+        seatingPlan.listesTable
+      );
+      const seating_plan = await repository.getSeatingPlanById(
+        newSeatingPlan.id
+      );
+      return { seating_plan };
     }
-    return "You gave a non-existent table number";
+    return { errorMessage: "You gave a non-existent table number" };
   },
 
   async getById(id) {
-    return await repository.getServiceById(id);
+    return await repository.getSeatingPlanById(id);
   },
 });
