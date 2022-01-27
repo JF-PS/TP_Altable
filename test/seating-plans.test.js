@@ -30,30 +30,17 @@ describe("Check SeatingPlans Business", () => {
       },
     });
     const res = mockResponse();
-    const expected = {
-      id: 1,
-      freeze: false,
-      tables: [
-        {
-          seatingPlanId: 1,
-          numTable: 1,
-          nbGuests: 1,
-        },
-      ],
-    };
 
     mockSeatingPlanService.getNbNumTable.mockReturnValue(1);
     mockSeatingPlanService.createSeatingPlan.mockReturnValue(true);
-    mockSeatingPlanService.addTableToSeatingPlan.mockReturnValue(true);
-    mockSeatingPlanService.getSeatingPlanById.mockReturnValue(expected);
 
     // Act
     await controller.create(req, res);
 
     // Assert
     expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith({ seatingPlan: expected });
-    expect(mockSeatingPlanService.getSeatingPlanById).toHaveBeenCalledTimes(1);
+    expect(res.json).toHaveBeenCalledWith({ seatingPlan: true });
+    expect(mockSeatingPlanService.createSeatingPlan).toHaveBeenCalledTimes(1);
   });
 
   test("if numTable don't exist", async () => {

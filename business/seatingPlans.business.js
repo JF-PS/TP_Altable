@@ -11,16 +11,7 @@ module.exports = (repository) => ({
     const allNumTableExist = nbNumTable === numTableList.length;
 
     if (allNumTableExist) {
-      console.log("test");
-      const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);
-
-      await repository.addTableToSeatingPlan(
-        newSeatingPlan.id,
-        seatingPlan.listesTable
-      );
-      const seating_plan = await repository.getSeatingPlanById(
-        newSeatingPlan.id
-      );
+      const seating_plan = await repository.createSeatingPlan(seatingPlan);
       return { seating_plan };
     }
     return { errorMessage: "You gave a non-existent table number" };

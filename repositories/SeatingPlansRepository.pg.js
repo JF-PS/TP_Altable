@@ -1,8 +1,9 @@
 const Tables = require("../models").Tables;
 const SeatingPlans = require("../models").SeatingPlans;
 const PlanManagements = require("../models").PlanManagements;
-const { isEmpty } = require("lodash");
-const { Op } = require("sequelize");
+
+const Table = require("../expositions/table");
+const SeatingPlan = require("../expositions/seatingPlan");
 
 module.exports = class SeatingPlansRepository {
   async getNbNumTable(numTableList) {
@@ -20,11 +21,23 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async createSeatingPlan() {
+  async createSeatingPlan(seatingPlan) {
     return await new Promise((resolve, reject) => {
       SeatingPlans.create()
-        .then((seatingPlan) => {
-          resolve(seatingPlan);
+        .then((newSeatingPlan) => {
+          this.addTableToSeatingPlan(
+            newSeatingPlan.id,
+            seatingPlan.listesTable
+          ).then(() => {
+            this.getSeatingPlanById(newSeatingPlan.id).then((response) => {
+              const { freeze, tables } = response;
+              const listeTables = tables.map((table) => {
+                const { numTable, nbGuests } = table;
+                return new Table(numTable, nbGuests);
+              });
+              resolve(new SeatingPlan(listeTables, freeze));
+            });
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -34,14 +47,6 @@ module.exports = class SeatingPlansRepository {
   }
 
   async addTableToSeatingPlan(seatingPlanId, listTables) {
-    console.log("***************************");
-    console.log("***************************");
-    console.log("***************************");
-    console.log(seatingPlanId);
-    console.log(listTables);
-    console.log("***************************");
-    console.log("***************************");
-    console.log("***************************");
     return await new Promise((resolve, reject) => {
       listTables.map((table) => {
         PlanManagements.create({
