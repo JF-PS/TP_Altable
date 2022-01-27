@@ -46,8 +46,8 @@
             },
             "indexes": []
         },
-        "SeatingPlans": {
-            "tableName": "SeatingPlans",
+        "PlanManagements": {
+            "tableName": "PlanManagements",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -56,11 +56,11 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "serviceId": {
-                    "field": "serviceId",
+                "seatingPlanId": {
+                    "field": "seatingPlanId",
                     "allowNull": true,
                     "references": {
-                        "model": "Services",
+                        "model": "SeatingPlans",
                         "key": "id"
                     },
                     "onDelete": "NO ACTION",
@@ -95,6 +95,36 @@
             },
             "indexes": []
         },
+        "SeatingPlans": {
+            "tableName": "SeatingPlans",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "freeze": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "freeze",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Services": {
             "tableName": "Services",
             "schema": {
@@ -103,6 +133,17 @@
                     "autoIncrement": true,
                     "allowNull": false,
                     "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "seatingPlanId": {
+                    "field": "seatingPlanId",
+                    "allowNull": true,
+                    "references": {
+                        "model": "SeatingPlans",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "startDate": {
@@ -134,10 +175,6 @@
                     "autoIncrement": true,
                     "allowNull": false,
                     "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "numTable": {
-                    "field": "numTable",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {

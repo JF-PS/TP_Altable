@@ -1,6 +1,6 @@
-const Services = require("../models").Services;
 const Tables = require("../models").Tables;
 const SeatingPlans = require("../models").SeatingPlans;
+const PlanManagements = require("../models").PlanManagements;
 const { isEmpty } = require("lodash");
 const { Op } = require("sequelize");
 
@@ -8,7 +8,7 @@ module.exports = class SeatingPlansRepository {
   async getNbNumTable(numTableList) {
     return await new Promise((resolve, reject) => {
       Tables.count({
-        where: { numTable: numTableList },
+        where: { id: numTableList },
       })
         .then((nbNumTable) => {
           resolve(nbNumTable);
@@ -20,18 +20,11 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async checkSchedulePlan(service) {
-    const { startDate } = service;
+  async createSeatingPlan() {
     return await new Promise((resolve, reject) => {
-      Services.findAll({
-        where: {
-          endDate: {
-            [Op.gt]: startDate,
-          },
-        },
-      })
-        .then((servicesExists) => {
-          resolve(servicesExists);
+      SeatingPlans.create()
+        .then((seatingPlan) => {
+          resolve(seatingPlan);
         })
         .catch((err) => {
           console.log(err);
@@ -40,27 +33,21 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async createService(service) {
-    const { startDate, endDate } = service;
-    return await new Promise((resolve, reject) => {
-      Services.create({ startDate, endDate })
-        .then((newService) => {
-          resolve(newService);
-        })
-        .catch((err) => {
-          console.log(err);
-          reject(err);
-        });
-    });
-  }
-
-  async addTableToSeatingPlan(serviceId, listTables) {
+  async addTableToSeatingPlan(seatingPlanId, listTables) {
+    console.log("***************************");
+    console.log("***************************");
+    console.log("***************************");
+    console.log(seatingPlanId);
+    console.log(listTables);
+    console.log("***************************");
+    console.log("***************************");
+    console.log("***************************");
     return await new Promise((resolve, reject) => {
       listTables.map((table) => {
-        SeatingPlans.create({
+        PlanManagements.create({
+          seatingPlanId,
           numTable: table.numTable,
           nbGuests: table.nbGuests,
-          serviceId,
         })
           .then((addTable) => {
             resolve(addTable);
@@ -73,21 +60,34 @@ module.exports = class SeatingPlansRepository {
     });
   }
 
-  async getServiceById(id) {
+  async getSeatingPlanById(id) {
     return await new Promise((resolve, reject) => {
-      Services.findOne({
-        attributes: ["id", "startDate", "endDate"],
+      SeatingPlans.findOne({
+        attributes: ["id", "freeze"],
         include: [
           {
-            model: SeatingPlans,
-            as: "services_seating_plan",
-            attributes: ["serviceId", "numTable", "nbGuests"],
+            model: PlanManagements,
+            as: "tables",
+            attributes: ["seatingPlanId", "numTable", "nbGuests"],
           },
         ],
         where: { id },
       })
         .then((seatingPlan) => {
           resolve(seatingPlan);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  }
+
+  async updateSeatingPlanFreeze(id, freeze) {
+    return await new Promise((resolve, reject) => {
+      SeatingPlans.findOne({ where: { id } })
+        .then((updateSeatingPlan) => {
+          resolve(updateSeatingPlan.update({ freeze }));
         })
         .catch((err) => {
           console.log(err);

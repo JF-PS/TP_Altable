@@ -4,16 +4,17 @@ const Sequelize = require("sequelize");
  * Actions summary:
  *
  * createTable() => "Dishes", deps: []
- * createTable() => "Services", deps: []
+ * createTable() => "SeatingPlans", deps: []
  * createTable() => "Tables", deps: []
- * createTable() => "SeatingPlans", deps: [Services, Tables]
+ * createTable() => "PlanManagements", deps: [SeatingPlans, Tables]
+ * createTable() => "Services", deps: [SeatingPlans]
  *
  */
 
 const info = {
   revision: 1,
   name: "migration",
-  created: "2022-01-23T15:49:30.325Z",
+  created: "2022-01-26T14:52:04.794Z",
   comment: "",
 };
 
@@ -56,7 +57,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "Services",
+      "SeatingPlans",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -65,8 +66,11 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
-        startDate: { type: Sequelize.DATE, field: "startDate" },
-        endDate: { type: Sequelize.DATE, field: "endDate" },
+        freeze: {
+          type: Sequelize.BOOLEAN,
+          field: "freeze",
+          defaultValue: false,
+        },
         createdAt: {
           type: Sequelize.DATE,
           field: "createdAt",
@@ -93,7 +97,6 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
-        numTable: { type: Sequelize.INTEGER, field: "numTable" },
         createdAt: {
           type: Sequelize.DATE,
           field: "createdAt",
@@ -111,7 +114,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "SeatingPlans",
+      "PlanManagements",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -120,13 +123,13 @@ const migrationCommands = (transaction) => [
           autoIncrement: true,
           primaryKey: true,
         },
-        serviceId: {
+        seatingPlanId: {
           type: Sequelize.INTEGER,
           onUpdate: "CASCADE",
           onDelete: "NO ACTION",
-          references: { model: "Services", key: "id" },
+          references: { model: "SeatingPlans", key: "id" },
           allowNull: true,
-          field: "serviceId",
+          field: "seatingPlanId",
         },
         numTable: {
           type: Sequelize.INTEGER,
@@ -151,12 +154,52 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
+  {
+    fn: "createTable",
+    params: [
+      "Services",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        seatingPlanId: {
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "NO ACTION",
+          references: { model: "SeatingPlans", key: "id" },
+          allowNull: true,
+          field: "seatingPlanId",
+        },
+        startDate: { type: Sequelize.DATE, field: "startDate" },
+        endDate: { type: Sequelize.DATE, field: "endDate" },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+      },
+      { transaction },
+    ],
+  },
 ];
 
 const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["Dishes", { transaction }],
+  },
+  {
+    fn: "dropTable",
+    params: ["PlanManagements", { transaction }],
   },
   {
     fn: "dropTable",

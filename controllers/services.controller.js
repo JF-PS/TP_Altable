@@ -1,20 +1,14 @@
-const Table = require("../expositions/table");
-const SeatingPlan = require("../expositions/seatingPlan");
-
 module.exports = (buisness) => ({
   async create(req, res) {
-    const { listeTables } = req.body;
-
-    listeTables.map((table) => new Table(table.numTable, table.nbGuests));
-    const freeze = false;
-
+    const { startDate, endDate, seatingPlanId } = req.body;
+    const Service = require("../expositions/service");
     await buisness
-      .create(new SeatingPlan(listeTables, freeze))
+      .create(new Service(startDate, endDate, seatingPlanId))
       .then((response) => {
         if (response.errorMessage != null) {
           res.status(412).json({ message: response.errorMessage });
         }
-        res.status(201).json({ seatingPlan: response.seating_plan });
+        res.status(201).json({ service: response.theService });
       })
       .catch((err) => {
         res.status(500).json(err);
@@ -24,9 +18,9 @@ module.exports = (buisness) => ({
   async getById(req, res) {
     await buisness
       .getById(req.params.id)
-      .then((seatingPlan) => {
-        if (seatingPlan) {
-          res.status(200).json(seatingPlan);
+      .then((service) => {
+        if (service) {
+          res.status(200).json(service);
         } else {
           res
             .status(404)

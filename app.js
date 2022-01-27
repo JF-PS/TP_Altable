@@ -21,6 +21,12 @@ const seatingPlanBusiness = require("./business/seatingPlans.business");
 const SeatingPlansRepository = require("./repositories/SeatingPlansRepository.pg");
 const seatingPlansRepository = new SeatingPlansRepository();
 
+const serviceRoutes = require("./routes/services.route");
+const serviceController = require("./controllers/services.controller");
+const serviceBusiness = require("./business/services.business");
+const ServicesRepository = require("./repositories/ServicesRepository.pg");
+const servicesRepository = new ServicesRepository();
+
 // ============================================================================================================================================================================
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -35,6 +41,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 // ============================================================================================================================================================================
 
+app.get("/", (req, res) => {
+  res.sendFile("./ext/index.html", { root: __dirname });
+});
+
 app.use(
   "/dishes",
   dishRoutes(express, dishController(dishBusiness(dishesRepository)))
@@ -45,6 +55,16 @@ app.use(
   seatingPlanRoutes(
     express,
     seatingPlanController(seatingPlanBusiness(seatingPlansRepository))
+  )
+);
+
+app.use(
+  "/services",
+  serviceRoutes(
+    express,
+    serviceController(
+      serviceBusiness(servicesRepository, seatingPlansRepository)
+    )
   )
 );
 

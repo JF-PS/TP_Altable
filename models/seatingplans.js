@@ -3,15 +3,9 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SeatingPlans extends Model {
     static associate(models) {
-      SeatingPlans.belongsTo(models.Tables, {
-        foreignKey: "numTable",
-        as: "table",
-        allowNull: true,
-      });
-
-      SeatingPlans.belongsTo(models.Services, {
-        foreignKey: "serviceId",
-        as: "services",
+      SeatingPlans.hasMany(models.PlanManagements, {
+        foreignKey: "seatingPlanId",
+        as: "tables",
         allowNull: true,
       });
     }
@@ -24,9 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      serviceId: DataTypes.INTEGER,
-      numTable: DataTypes.INTEGER,
-      nbGuests: DataTypes.INTEGER,
+      freeze: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

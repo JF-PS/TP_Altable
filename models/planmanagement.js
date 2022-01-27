@@ -1,16 +1,22 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Services extends Model {
+  class PlanManagements extends Model {
     static associate(models) {
-      Services.belongsTo(models.SeatingPlans, {
+      PlanManagements.belongsTo(models.Tables, {
+        foreignKey: "numTable",
+        as: "table",
+        allowNull: true,
+      });
+
+      PlanManagements.belongsTo(models.SeatingPlans, {
         foreignKey: "seatingPlanId",
-        as: "seating-plan",
+        as: "services",
         allowNull: true,
       });
     }
   }
-  Services.init(
+  PlanManagements.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -19,13 +25,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       seatingPlanId: DataTypes.INTEGER,
-      startDate: DataTypes.DATE,
-      endDate: DataTypes.DATE,
+      numTable: DataTypes.INTEGER,
+      nbGuests: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Services",
+      modelName: "PlanManagements",
     }
   );
-  return Services;
+  return PlanManagements;
 };

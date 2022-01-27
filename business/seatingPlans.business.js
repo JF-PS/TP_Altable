@@ -1,5 +1,3 @@
-const { isEmpty } = require("lodash");
-
 module.exports = (repository) => ({
   async create(seatingPlan) {
     let numTableList = [];
@@ -13,30 +11,22 @@ module.exports = (repository) => ({
     const allNumTableExist = nbNumTable === numTableList.length;
 
     if (allNumTableExist) {
-      isSchedule = await repository.checkSchedulePlan(seatingPlan);
+      console.log("test");
+      const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);
 
-      if (isEmpty(isSchedule)) {
-        const service = await repository.createService(seatingPlan);
-        await repository.addTableToSeatingPlan(
-          service.id,
-          seatingPlan.listesTable
-        );
-        const myService = await repository.getServiceById(service.id);
-        return { status: 201, response: myService };
-      }
-      return {
-        status: 201,
-        response:
-          "Error: Il existe déjà un plan sur cette tranches horraires !",
-      };
+      await repository.addTableToSeatingPlan(
+        newSeatingPlan.id,
+        seatingPlan.listesTable
+      );
+      const seating_plan = await repository.getSeatingPlanById(
+        newSeatingPlan.id
+      );
+      return { seating_plan };
     }
-    return {
-      status: 201,
-      response: "Error: You gave a non-existent table number",
-    };
+    return { errorMessage: "You gave a non-existent table number" };
   },
 
   async getById(id) {
-    return await repository.getServiceById(id);
+    return await repository.getSeatingPlanById(id);
   },
 });
