@@ -34,14 +34,6 @@ module.exports = class SeatingPlansRepository {
   }
 
   async addTableToSeatingPlan(seatingPlanId, listTables) {
-    console.log("***************************");
-    console.log("***************************");
-    console.log("***************************");
-    console.log(seatingPlanId);
-    console.log(listTables);
-    console.log("***************************");
-    console.log("***************************");
-    console.log("***************************");
     return await new Promise((resolve, reject) => {
       listTables.map((table) => {
         PlanManagements.create({

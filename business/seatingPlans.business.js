@@ -11,7 +11,6 @@ module.exports = (repository) => ({
     const allNumTableExist = nbNumTable === numTableList.length;
 
     if (allNumTableExist) {
-      console.log("test");
       const newSeatingPlan = await repository.createSeatingPlan(seatingPlan);
 
       await repository.addTableToSeatingPlan(

@@ -9,7 +9,7 @@ module.exports = (buisness) => ({
     const freeze = false;
 
     await buisness
-      .create(new SeatingPlan(listeTables, freeze))
+      .create(new SeatingPlan(1, listeTables, freeze))
       .then((response) => {
         if (response.errorMessage != null) {
           res.status(412).json({ message: response.errorMessage });
